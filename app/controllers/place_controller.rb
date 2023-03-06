@@ -94,7 +94,7 @@ private
   end
 
   def imminence_response_from_data(postcode, imminence_response, error)
-    return ImminenceResponse.new(postcode, [], [], error) if error
+    return ImminenceResponse.new(postcode, [], [], error) if error || postcode.blank?
 
     imminence_data = imminence_response.to_hash
     places = []

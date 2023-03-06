@@ -254,6 +254,29 @@ class PlacesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  context "given an empty postcode" do
+    setup do
+      visit "/passport-interview-office"
+      click_on "Find"
+    end
+
+    should "display error message" do
+      assert page.has_content?("This isn't a valid postcode")
+    end
+
+    should "not show the 'no results' message" do
+      assert page.has_no_content?("We couldn't find any results for this postcode.")
+    end
+
+    should "display the postcode form" do
+      within ".location-form" do
+        assert page.has_field?("Enter a postcode")
+        assert page.has_field?("postcode")
+        assert_has_button("Find")
+      end
+    end
+  end
+
   context "given an invalid postcode" do
     setup do
       query_hash = { "postcode" => "BAD POSTCODE", "limit" => Frontend::IMMINENCE_QUERY_LIMIT }
